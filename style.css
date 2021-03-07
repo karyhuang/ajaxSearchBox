@@ -1,3 +1,18 @@
+div#nav
+{
+    height: 100px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#nav ul li
+{
+    margin-right: 15px;
+    float: left;
+    font-size: 12px;
+    list-style-type: none;
+}
 html {
   box-sizing: border-box;
   background:#ed7a8e;
