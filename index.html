@@ -8,11 +8,13 @@
 <body>
 
   <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
+    <input id="busqueda" type="text" class="search" placeholder="City or State">
+    <div id="nav">
+	<ul style="width: 500px; height: 400px; overflow: auto;" class="suggestions">
       <li>Filter for a city</li>
       <li>or a state</li>
     </ul>
+	</div>
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
@@ -34,33 +36,58 @@ function findMatches(wordToMatch, cities) {
   });
 }
 
-// put commas for thousands
 function format(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function ponerTexto(texto){
+
+	document.getElementById("busqueda").value = texto; 
+	
+	document.getElementById('nav').style.display = "none";
+	
+}
+
 function displayMatches() {
-  const matchArray = findMatches(this.value, cities);
+
+	document.getElementById('nav').style.display = "block";
+
+	const matchArray = findMatches(this.value, cities);
+  
   const result = matchArray.map(place => {
+	
+	const test=place.city;
+	
     const regex = new RegExp(this.value, 'gi');
     // replace the seached value with a span of class highlight to highlight the text searched
-    const cityName = place.city.replace(regex, `<span class="highlight">${this.value}</span>`);
-    const stateName = place.state.replace(regex, `<span class="highlight">${this.value}</span>`);
-    return `
+    
+	const cityName = place.city.replace(regex, `<span class="highlight">${this.value}</span>`);
+    
+	const stateName = place.state.replace(regex, `<span class="highlight">${this.value}</span>`);
+    
+	return `
       <li>
-        <span class="name">${cityName}, ${stateName}</span>
+        <span style="font-size:24px;" onclick="ponerTexto('${test}')" class="menu-selected">${cityName}, ${stateName}</span>
         <span class="population">${format(place.population)}</span>
       </li>
     `;
+	
   }).join('');
+  
   suggestions.innerHTML = result;
+  
 }
 
 const searchInput = document.querySelector('.search');
+
 const suggestions = document.querySelector('.suggestions');
 
 searchInput.addEventListener('change', displayMatches);
+
 searchInput.addEventListener('keyup', displayMatches);
+
 </script>
+
   </body>
+  
 </html>
